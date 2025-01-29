@@ -1,0 +1,106 @@
+1.Reverse an array without using additional arrays.
+public class ReverseAraay {
+    public static void main(String[] args) {
+        
+  int arr[]={1,2,3,5,6,7,};
+
+  int n = arr.length;
+  // to pointer 
+  int i= 0;
+  int j= n-1;
+
+
+  for(int k=0;k<n/2;k++){
+   
+int tem= arr[i];
+arr[i]= arr[j];
+arr[j]= tem;
+i++;
+j--;
+
+  }
+
+  // to print 
+  for(int l:arr){
+    System.out.print(l+" ");
+  }
+
+
+2.Implement a program to check if two strings are anagrams.
+import java.util.Arrays;
+
+public class CheckStringAnagram {
+
+public static void main(String[] args) {
+String s1="abcd";
+String s2= "bcda";
+char[] s1Array = s1.toCharArray();
+char[] s2Array = s2.toCharArray();
+        Arrays.sort(s1Array);
+        Arrays.sort(s2Array);
+
+      boolean check=  Arrays.equals(s1Array, s2Array);
+       
+      System.out.println(check?"it is the Anagram":"it is Not Anagram");
+
+}
+
+
+    
+}
+
+
+3.Create a program using StringBuilder to reverse a string and remove vowels from it.
+public class ReverseString {
+  
+    public static void main(String[] args) {
+        String s="abcdefghij";
+         StringBuffer buffer = new StringBuffer(s);
+         
+         System.out.println("Reverse the String :"+buffer.reverse());
+        
+         for (int i = 0; i < s.length(); i++) { 
+            if (s.charAt(i) == 'a' || s.charAt(i) == 'e'
+                || s.charAt(i) == 'i' || s.charAt(i) == 'o'
+                || s.charAt(i) == 'u' || s.charAt(i) == 'A'
+                || s.charAt(i) == 'E' || s.charAt(i) == 'I'
+                || s.charAt(i) == 'O'
+                || s.charAt(i) == 'U') { 
+                continue; 
+            } 
+            else { 
+                System.out.print(s.charAt(i)); 
+            } 
+        } 
+
+
+    }
+  
+  
+   
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+}
