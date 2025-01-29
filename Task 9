@@ -1,0 +1,64 @@
+1.Write a program to reverse a given string.
+import java.util.Scanner;
+
+public class ReverseString {
+    public static String reverse(String str) {
+        return new StringBuilder(str).reverse().toString();
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a string to reverse: ");
+        String input = scanner.nextLine();
+        System.out.println("Reversed String: " + reverse(input));
+        scanner.close();
+    }
+}
+
+2.Implement a function to check if a given string is a palindrome.
+import java.util.Scanner;
+
+public class PalindromeCheck {
+    public static boolean isPalindrome(String str) {
+        String reversed = new StringBuilder(str).reverse().toString();
+        return str.equalsIgnoreCase(reversed);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a string to check palindrome: ");
+        String input = scanner.nextLine();
+        if (isPalindrome(input)) {
+            System.out.println("The string is a palindrome.");
+        } else {
+            System.out.println("The string is not a palindrome.");
+        }
+        scanner.close();
+    }
+}
+3.Write a program to count the occurrences of a specific character in a string.
+import java.util.Scanner;
+
+public class CharacterCount {
+    public static int countOccurrences(String str, char ch) {
+        int count = 0;
+        for (char c : str.toCharArray()) {
+            if (c == ch) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+        System.out.print("Enter a character to count: ");
+        char ch = scanner.next().charAt(0);
+        System.out.println("The character '" + ch + "' appears " + countOccurrences(input, ch) + " times.");
+        scanner.close();
+    }
+}
+
+
