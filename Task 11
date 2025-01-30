@@ -1,0 +1,105 @@
+Create a package com.company.department with two classes:
+Employee with private fields and public methods.
+Department that accesses Employee details using methods.
+Demonstrate the use of all access modifiers in a program.
+
+package com.company.department;
+
+public class Employee {
+    private String name;        // Private field
+    int age;                    // Default field 
+    protected double salary;     // Protected field
+    public String department;    // Public field
+
+    // Constructor
+    public Employee(String name, int age, double salary, String department) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.department = department;
+    }
+
+    // Public method to access private field
+    public String getName() {
+        return name;
+    }
+
+    // Default access method (only accessible within the package)
+    void printAge() {
+        System.out.println("Age: " + age);
+    }
+
+    // Protected method (accessible within the package and by subclasses)
+    protected void showSalary() {
+        System.out.println("Salary: $" + salary);
+    }
+
+    // Public method (accessible from anywhere)
+    public void showDepartment() {
+        System.out.println("Department: " + department);
+    }
+}
+
+
+package com.company.department;
+
+public class Department {
+    public void displayEmployeeDetails() {
+        Employee emp = new Employee("John Doe", 30, 50000, "IT");
+
+        
+        // Accessing private field via public method
+        System.out.println("Employee Name: " + emp.getName());
+
+        // Accessing default field (within the same package)
+        System.out.println("Employee Age: " + emp.age); 
+
+        // Accessing protected field (within the same package)
+        System.out.println("Employee Salary: " + emp.salary); 
+
+        // Accessing public field (always allowed)
+        System.out.println("Employee Department: " + emp.department);
+        // Calling default, protected, and public methods
+        emp.printAge();     
+        emp.showSalary();    
+        emp.showDepartment();
+    }
+}
+
+
+import com.company.department.Employee;
+import com.company.department.Department;
+
+public class Main {
+    public static void main(String[] args) {
+        Department dept = new Department();
+        dept.displayEmployeeDetails();
+
+
+        Employee emp = new Employee("Alice", 28, 60000, "HR");
+
+        // Accessing private field (Not Allowed)
+        
+
+        // Accessing public field (Allowed)
+        System.out.println("Department from Main: " + emp.department); 
+
+        // Accessing public method (Allowed)
+        System.out.println("Employee Name from Main: " + emp.getName()); 
+
+        // Accessing default and protected methods (Not Allowed)
+        // emp.printAge(); 
+        // emp.showSalary();  
+        
+        emp.showDepartment();
+    }
+}
+
+
+
+
+
+
+
+
+
