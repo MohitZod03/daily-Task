@@ -1,0 +1,68 @@
+1.Handle division by zero using try-catch. Open and close resources in the finally block
+import java.util.Scanner;
+
+public class Task1 {
+    
+    public static void main(String[] args) {
+        
+        Scanner obj= new Scanner(System.in);
+
+         System.out.println("enter then value of a ");
+        int a= obj.nextInt();
+        try {
+            int b=0;
+            int c= a/b;
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+        }
+        finally{
+            System.out.println("Iam finally block, iam always execut");
+            
+        }
+    }
+}
+
+
+
+2. Create a custom exception for invalid age input (e.g., age less than 0) in an AgeValidator class.
+
+public class Task2 {
+    public static void main(String[] args) {
+        
+       try {
+           ValidAge.checkAge(15);  // This will throw the custom exception
+       } catch (AgeLessThanException e) {
+           System.out.println(e.getMessage());  // This will print the exception message
+       }
+
+    }
+}
+
+public class ValidAge  {
+    
+    public static void checkAge(int age) throws AgeLessThanException {
+        
+        if(age < 18) {
+            throw new AgeLessThanException("Your age is less than 18");
+        }
+
+    }
+}
+
+public class AgeLessThanException extends Exception { // Custom exception class
+
+    public AgeLessThanException(String message) {  // Correct parameter name
+        super(message);  // Pass the message to the parent class
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
