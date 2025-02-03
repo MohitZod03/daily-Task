@@ -1,0 +1,133 @@
+1.Create a text file and write random numbers to it.Read the file and print the sum of those numbers.
+
+import java.io.*;
+import java.util.Random;
+import java.util.Scanner;
+
+public class RandomNumbersSum {
+    public static void main(String[] args) {
+        String fileName = "numbers.txt";
+        int count = 10; // Number of random numbers to generate
+
+        // Step 1: Write random numbers to a file
+        writeRandomNumbersToFile(fileName, count);
+
+        // Step 2: Read the file and calculate the sum
+        int sum = readNumbersAndCalculateSum(fileName);
+        System.out.println("The sum of the numbers in " + fileName + " is: " + sum);
+    }
+
+    // Method to write random numbers to a file
+    private static void writeRandomNumbersToFile(String fileName, int count) {
+        Random random = new Random();
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            for (int i = 0; i < count; i++) {
+                // Generate a random number between 0 and 100
+                int num = random.nextInt(101);
+                writer.println(num);
+            }
+            System.out.println("Random numbers written to " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
+    // Method to read numbers from a file and calculate their sum
+    private static int readNumbersAndCalculateSum(String fileName) {
+        int sum = 0;
+        try (Scanner scanner = new Scanner(new File(fileName))) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                try {
+                    int number = Integer.parseInt(line.trim());
+                    sum += number;
+                } catch (NumberFormatException e) {
+                    System.err.println("Skipping invalid number: " + line);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("File " + fileName + " not found: " + e.getMessage());
+        }
+        return sum;
+    }
+}
+
+
+
+2.Write a program using BufferedReader to read a file line-by-line and count the number of lines.
+
+import java.io.*;
+
+public class LineCounter {
+    public static void main(String[] args) {
+        String fileName = "sample.txt";
+        int lineCount = countLines(fileName);
+        System.out.println("The file " + fileName + " has " + lineCount + " lines.");
+    }
+
+    // Method to count lines in a file using BufferedReader
+    private static int countLines(String fileName) {
+        int count = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            while (reader.readLine() != null) {
+                count++;
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading the file " + fileName + ": " + e.getMessage());
+        }
+        return count;
+    }
+}
+
+
+3.Create a program to copy content from a binary file (e.g., an image) using FileInputStream and FileOutputStream.
+
+
+import java.io.*;
+
+public class BinaryFileCopy {
+    public static void main(String[] args) {
+        // Specify the source binary file and destination file
+        String sourceFile = "sourceImage.jpg";     // Replace with your binary file name
+        String destinationFile = "copiedImage.jpg";  // The destination file
+
+        copyBinaryFile(sourceFile, destinationFile);
+    }
+
+    // Method to copy a binary file using FileInputStream and FileOutputStream
+    private static void copyBinaryFile(String sourceFile, String destinationFile) {
+        try (
+            FileInputStream fis = new FileInputStream(sourceFile);
+            FileOutputStream fos = new FileOutputStream(destinationFile)
+        ) {
+            byte[] buffer = new byte[4096]; // Buffer size of 4KB
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
+            }
+            System.out.println("File copied successfully from " + sourceFile + " to " + destinationFile);
+        } catch (IOException e) {
+            System.err.println("Error copying file: " + e.getMessage());
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
