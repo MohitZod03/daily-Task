@@ -1,0 +1,152 @@
+1.Add and retrieve elements from an ArrayList and a LinkedList.
+import java.util.*;
+
+public class ListExample {
+    public static void main(String[] args) {
+        // ArrayList Example
+        List<String> arrayList = new ArrayList<>();
+        arrayList.add("Apple");
+        arrayList.add("Banana");
+        arrayList.add("Cherry");
+
+        System.out.println("ArrayList elements: " + arrayList);
+        System.out.println("Element at index 1: " + arrayList.get(1));
+
+        // LinkedList Example
+        List<String> linkedList = new LinkedList<>();
+        linkedList.add("Dog");
+        linkedList.add("Elephant");
+        linkedList.add("Fox");
+
+        System.out.println("LinkedList elements: " + linkedList);
+        System.out.println("Element at index 2: " + linkedList.get(2));
+    }
+}
+
+
+2.Demonstrate insertion order and sorting in TreeSet.
+
+import java.util.*;
+
+public class TreeSetExample {
+    public static void main(String[] args) {
+        TreeSet<Integer> numbers = new TreeSet<>();
+        numbers.add(45);
+        numbers.add(12);
+        numbers.add(78);
+        numbers.add(30);
+
+        System.out.println("TreeSet elements (sorted): " + numbers);
+    }
+}
+
+
+3.Use a HashMap to store and retrieve student details (roll number, name).
+
+import java.util.*;
+
+public class StudentHashMap {
+    public static void main(String[] args) {
+        Map<Integer, String> studentMap = new HashMap<>();
+        studentMap.put(101, "Alice");
+        studentMap.put(102, "Bob");
+        studentMap.put(103, "Charlie");
+
+        // Retrieving values
+        for (Map.Entry<Integer, String> entry : studentMap.entrySet()) {
+            System.out.println("Roll No: " + entry.getKey() + ", Name: " + entry.getValue());
+        }
+    }
+}
+
+4. Write a program to count the frequency of each word in a given sentence using HashMap
+import java.util.*;
+
+public class WordFrequency {
+    public static void main(String[] args) {
+        String sentence = "Java is fun and Java is powerful";
+        String[] words = sentence.split(" ");
+
+        Map<String, Integer> wordCount = new HashMap<>();
+
+        for (String word : words) {
+            wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);
+        }
+
+        System.out.println("Word Frequency: " + wordCount);
+    }
+}
+
+
+5.Write a program to find duplicate elements in an ArrayList.
+import java.util.*;
+
+public class DuplicateFinder {
+    public static void main(String[] args) {
+        List<String> list = Arrays.asList("apple", "banana", "apple", "cherry", "banana", "date");
+
+        Set<String> uniqueElements = new HashSet<>();
+        Set<String> duplicates = new HashSet<>();
+
+        for (String item : list) {
+            if (!uniqueElements.add(item)) {
+                duplicates.add(item);
+            }
+        }
+
+        System.out.println("Duplicate elements: " + duplicates);
+    }
+}
+
+6. Given a list of integers, remove duplicates using a HashSet.
+
+
+import java.util.*;
+
+public class RemoveDuplicates {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 2, 3, 5, 6, 7, 5);
+        
+        Set<Integer> uniqueNumbers = new HashSet<>(numbers);
+        
+        System.out.println("List without duplicates: " + uniqueNumbers);
+    }
+}
+
+7.Hospital class and patient class use priorityQueue and according to their priority you have attend the patient.
+
+import java.util.*;
+
+class Patient {
+    String name;
+    int priority;
+
+    public Patient(String name, int priority) {
+        this.name = name;
+        this.priority = priority;
+    }
+
+    public String toString() {
+        return "Patient{name='" + name + "', priority=" + priority + "}";
+    }
+}
+
+public class HospitalManagement {
+    public static void main(String[] args) {
+        PriorityQueue<Patient> patientQueue = new PriorityQueue<>(Comparator.comparingInt(p -> p.priority));
+
+        patientQueue.add(new Patient("John", 2));
+        patientQueue.add(new Patient("Alice", 1));
+        patientQueue.add(new Patient("Bob", 3));
+
+        System.out.println("Patients in order of priority:");
+        while (!patientQueue.isEmpty()) {
+            System.out.println(patientQueue.poll());
+        }
+    }
+}
+
+
+
+
+
