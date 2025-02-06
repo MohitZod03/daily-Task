@@ -1,0 +1,109 @@
+1.Create a file reader utility tool and upload it to GitHub. Share how this helped you understand Java's IO Streams.
+import java.io.*;
+
+public class FileReaderUtility {
+    public static void readFile(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        String filePath = "example.txt"; // Change to your file path
+        readFile(filePath);
+    }
+}
+
+2.Create a Student class with fields name and marks. Serialize and deserialize an object of this class to and from a file.
+
+import java.io.*;
+
+class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private int marks;
+
+    public Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    public void display() {
+        System.out.println("Name: " + name + ", Marks: " + marks);
+    }
+}
+
+
+public class StudentSerialization {
+    public static void serializeStudent(Student student, String fileName) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            oos.writeObject(student);
+            System.out.println("Student object serialized successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Student deserializeStudent(String fileName) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+            return (Student) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void main(String[] args) {
+        String file = "student.dat";
+        
+        Student student1 = new Student("Alice", 85);
+        serializeStudent(student1, file);
+
+        Student deserializedStudent = deserializeStudent(file);
+        if (deserializedStudent != null) {
+            deserializedStudent.display();
+        }
+    }
+}
+
+
+3.Write a program to count the number of words in a text file.
+
+
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class WordCount {
+    public static int countWords(String filePath) {
+        int wordCount = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                StringTokenizer st = new StringTokenizer(line);
+                wordCount += st.countTokens();
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return wordCount;
+    }
+
+    public static void main(String[] args) {
+        String filePath = "example.txt"; // Change to your file path
+        int words = countWords(filePath);
+        System.out.println("Total number of words: " + words);
+    }
+}
+
+
+
+
+
+
+
+
