@@ -1,0 +1,118 @@
+1.Sort an array of integers using bubble sort.
+import java.util.Arrays;
+
+public class BubbleSort {
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    // Swap arr[j] and arr[j+1]
+//
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {5, 1, 4, 2, 8};
+        bubbleSort(arr);
+        System.out.println("Sorted array: " + Arrays.toString(arr));
+    }
+}
+
+
+2.Sort an array of integers using selection sort.
+import java.util.Arrays;
+
+public class SelectionSort {
+    public static void selectionSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[minIndex]) {
+                    minIndex = j;
+                }
+            }
+            // Swap arr[i] and arr[minIndex]
+            int temp = arr[i];
+            arr[i] = arr[minIndex];
+            arr[minIndex] = temp;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {64, 25, 12, 22, 11};
+        selectionSort(arr);
+        System.out.println("Sorted array: " + Arrays.toString(arr));
+    }
+}
+
+
+3.Find the factorial of a number using recursion.
+public class Factorial {
+    public static int factorial(int n) {
+        if (n == 0) {
+            return 1; // Base case
+        }
+        return n * factorial(n - 1); // Recursive call
+    }
+
+    public static void main(String[] args) {
+        int num = 5;
+        System.out.println("Factorial of " + num + " is: " + factorial(num));
+    }
+}
+
+4.Generate the Fibonacci sequence up to n terms
+public class Fibonacci {
+    public static void printFibonacci(int n) {
+        int first = 0, second = 1;
+        System.out.print("Fibonacci Sequence: " + first + " " + second + " ");
+        for (int i = 2; i < n; i++) {
+            int next = first + second;
+            System.out.print(next + " ");
+            first = second;
+            second = next;
+        }
+    }
+
+    public static void main(String[] args) {
+        int n = 10; // Change this for more terms
+        printFibonacci(n);
+    }
+}
+
+5.Challenge: Write a recursive program to reverse a string.
+
+public class ReverseString {
+    public static String reverse(String str) {
+        if (str.isEmpty()) {
+            return str; // Base case
+        }
+        return reverse(str.substring(1)) + str.charAt(0); // Recursive call
+    }
+
+    public static void main(String[] args) {
+        String input = "hello";
+        System.out.println("Reversed String: " + reverse(input));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
