@@ -1,0 +1,74 @@
+1.Implement a stack to reverse a string.
+import java.util.Stack;
+
+public class StackReverseString {
+    public static String reverseUsingStack(String str) {
+        Stack<Character> stack = new Stack<>();
+
+        // Push each character to the stack
+        for (char ch : str.toCharArray()) {
+            stack.push(ch);
+        }
+
+        // Pop characters to form the reversed string
+        StringBuilder reversed = new StringBuilder();
+        while (!stack.isEmpty()) {
+            reversed.append(stack.pop());
+        }
+
+        return reversed.toString();
+    }
+
+    public static void main(String[] args) {
+        String input = "hello";
+        System.out.println("Original String: " + input);
+        System.out.println("Reversed String: " + reverseUsingStack(input));
+    }
+}
+
+
+
+2.priority hospital queue for urgent emergency?
+
+import java.util.PriorityQueue;
+
+class Patient implements Comparable<Patient> {
+    String name;
+    int priority; // Lower value means higher urgency
+
+    public Patient(String name, int priority) {
+        this.name = name;
+        this.priority = priority;
+    }
+
+    @Override
+    public int compareTo(Patient other) {
+        return Integer.compare(this.priority, other.priority); // Min-Heap (lower priority treated first)
+    }
+}
+
+public class HospitalQueue {
+    public static void main(String[] args) {
+        PriorityQueue<Patient> emergencyQueue = new PriorityQueue<>();
+
+        // Adding patients to the queue
+        emergencyQueue.add(new Patient("Alice", 2)); // Moderate emergency
+        emergencyQueue.add(new Patient("Bob", 5)); // Minor emergency
+        emergencyQueue.add(new Patient("Charlie", 1)); // Critical emergency
+        emergencyQueue.add(new Patient("David", 3)); // Serious emergency
+
+        System.out.println("Processing Patients in Order of Priority:");
+        while (!emergencyQueue.isEmpty()) {
+            Patient patient = emergencyQueue.poll();
+            System.out.println("Treating: " + patient.name + " (Priority: " + patient.priority + ")");
+        }
+    }
+}
+
+
+
+
+
+
+
+
