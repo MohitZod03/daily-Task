@@ -1,0 +1,79 @@
+package TASK;
+
+public class BankAccount {
+    
+ 
+  private  String accountNumber;
+
+  private String accountHolder;
+  
+  private int balances;
+
+  private int password;
+
+public String getAccountNumber() {
+    return accountNumber;
+}
+
+public void setAccountNumber(String accountNumber) {
+    this.accountNumber = accountNumber;
+}
+
+public String getAccountHolder() {
+    return accountHolder;
+}
+
+public void setAccountHolder(String accountHolder) {
+    this.accountHolder = accountHolder;
+}
+
+public int getBalances() {
+    return balances;
+}
+
+public void setBalances(int balances) {
+    this.balances = balances;
+}
+
+public BankAccount(String accountNumber, String accountHolder, int balances, int password) {
+    this.accountNumber = accountNumber;
+    this.accountHolder = accountHolder;
+    this.balances = balances;
+    this.password = password;
+}
+
+
+public void withdraw(int withdraw){
+
+   if(balances>=withdraw) balances= balances-withdraw;
+   
+   System.out.println(withdraw+" successfully Withdraw Total Balances is "+balances);
+
+}
+
+public void deposit(int depost){
+balances=balances+depost;
+
+System.out.println(depost+" successfully Deposite Total balances is "+balances);
+
+}
+
+
+}
+
+
+package TASK;
+
+public class AccountNo1 {
+    
+public static void main(String[] args) {
+    
+    BankAccount account1= new BankAccount("123456", "MohitZod", 100000, 0123);
+
+    account1.deposit(1550);
+
+}
+
+
+
+}
