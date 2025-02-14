@@ -1,0 +1,45 @@
+1.Create an interface Shape with an abstract method calculateArea().
+interface Shape {
+    double calculateArea();
+}
+2.Create an abstract class Rectangle that implements Shape.
+abstract class Rectangle implements Shape {
+    protected double width, height;
+
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+}
+3.Create an anonymous class that extends Rectangle and provides the implementation for the calculateArea() method.
+abstract class Rectangle implements Shape {
+    protected double width, height;
+
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+}
+
+
+4. Create a nested static class Circle within the Rectangle class that implements Shape.
+ class Circle implements Shape {
+            private double radius;
+
+            public Circle(double radius) {
+                this.radius = radius;
+            }
+
+            @Override
+            public double calculateArea() {
+                return Math.PI * radius * radius;
+            }
+        }
+ Circle circle = new Circle(7);
+
+        System.out.println("Rectangle Area: " + rectangle.calculateArea());
+        System.out.println("Circle Area: " + circle.calculateArea());
+    }
+}
+
+
