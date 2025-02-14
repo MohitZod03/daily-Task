@@ -1,0 +1,111 @@
+1.Singleton: Create a thread-safe Singleton class Logger with a log(String message) method to print messages with a timestamp.
+class Logger {
+    private static volatile Logger instance;
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    private Logger() {}
+
+    public static Logger getInstance() {
+        if (instance == null) {
+            synchronized (Logger.class) {
+                if (instance == null) {
+                    instance = new Logger();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void log(String message) {
+        System.out.println("[" + LocalDateTime.now().format(formatter) + "] " + message);
+    }
+}
+
+
+
+
+2.Singleton: Create a Singleton DatabaseConnection class with connect() and disconnect() methods to simulate a single database connection.
+class DatabaseConnection {
+    private static volatile DatabaseConnection instance;
+    private boolean connected;
+
+    private DatabaseConnection() {}
+
+    public static DatabaseConnection getInstance() {
+        if (instance == null) {
+            synchronized (DatabaseConnection.class) {
+                if (instance == null) {
+                    instance = new DatabaseConnection();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public void connect() {
+        if (!connected) {
+            connected = true;
+            System.out.println("Database connected.");
+        } else {
+            System.out.println("Already connected.");
+        }
+    }
+
+    public void disconnect() {
+        if (connected) {
+            connected = false;
+            System.out.println("Database disconnected.");
+        } else {
+            System.out.println("Already disconnected.");
+        }
+    }
+}
+
+
+3.Enum: Define an enum UserRole with roles ADMIN, USER, and GUEST, and print access levels based on the role.
+enum UserRole {
+    ADMIN("Full Access"),
+    USER("Limited Access"),
+    GUEST("Read-Only Access");
+
+    private final String accessLevel;
+
+    UserRole(String accessLevel) {
+        this.accessLevel = accessLevel;
+    }
+
+    public String getAccessLevel() {
+        return accessLevel;
+    }
+}
+
+// Enum for Days of the Week
+enum Day {
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY;
+
+    public boolean isWeekend() {
+        return this == SATURDAY || this == SUNDAY;
+    }
+}
+
+4.Enum: Create an enum Day for days of the week, and write a program to determine if the day is a weekday or weekend.
+// Enum for StatusCode
+enum StatusCode {
+    SUCCESS("Operation completed successfully"),
+    ERROR("An error occurred"),
+    PENDING("Operation is pending");
+
+    private final String message;
+
+    StatusCode(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
+
+
+
+
