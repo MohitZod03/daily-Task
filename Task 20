@@ -1,0 +1,49 @@
+1. Currency Converter:
+Create a class CurrencyConverter that utilizes Java's BigDecimal wrapper class for precise currency calculations.
+Define exchange rates: Store exchange rates for a few currencies (e.g., USD, EUR, GBP) within the class (you can use static final BigDecimal fields for this).
+
+private static final BigDecimal USD_TO_EUR = new BigDecimal("0.85");
+    private static final BigDecimal USD_TO_GBP = new BigDecimal("0.75");
+
+    public static BigDecimal convertToEUR(BigDecimal amount) {
+        return amount.multiply(USD_TO_EUR);
+    }
+
+    public static BigDecimal convertToGBP(BigDecimal amount) {
+        return amount.multiply(USD_TO_GBP);
+    }
+}
+
+2.
+->import java.time.LocalDate;
+
+// Immutable class Person
+final class Person {
+    private final String firstName;
+    private final String lastName;
+    private final LocalDate dateOfBirth;
+
+    public Person(String firstName, String lastName, LocalDate dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public int getAge() {
+        return LocalDate.now().getYear() - dateOfBirth.getYear();
+    }
+}
+
+// Main class to test the Person class
+public class Main {
+    public static void main(String[] args) {
+        // Testing Immutable Person class
+        Person person = new Person("John", "Doe", LocalDate.of(1990, 5, 15));
+        System.out.println("Full Name: " + person.getFullName());
+        System.out.println("Age: " + person.getAge());
+    }
+}
