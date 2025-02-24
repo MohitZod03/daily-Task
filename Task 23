@@ -1,0 +1,55 @@
+1.
+import java.util.*;
+
+// Implementing Comparable for natural order sorting by age
+class Student implements Comparable<Student> {
+    String firstName;
+    String lastName;
+    int age;
+    double height;
+
+    // Constructor
+    public Student(String firstName, String lastName, int age, double height) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.height = height;
+    }
+
+    // Overriding compareTo for natural order sorting by age
+    @Override
+    public int compareTo(Student other) {
+        return Integer.compare(this.age, other.age);
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName + " (Age: " + age + ", Height: " + height + ")";
+    }
+}
+
+public class StudentSorting {
+    public static void main(String[] args) {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Alice", "Brown", 22, 5.5));
+        students.add(new Student("Bob", "Smith", 20, 5.8));
+        students.add(new Student("Charlie", "Davis", 21, 5.7));
+        students.add(new Student("David", "White", 23, 5.9));
+
+        // Custom sorting by the second character of firstName
+        Comparator<Student> secondCharComparator = (s1, s2) -> {
+            char c1 = s1.firstName.length() > 1 ? s1.firstName.charAt(1) : 0;
+            char c2 = s2.firstName.length() > 1 ? s2.firstName.charAt(1) : 0;
+            return Character.compare(c1, c2);
+        };
+
+        System.out.println("Sorting by the second character of firstName:");
+        students.sort(secondCharComparator);
+        students.forEach(System.out::println);
+
+        // Sorting by natural order (age) using Comparable
+        System.out.println("\nSorting by age (Natural Order):");
+        Collections.sort(students);
+        students.forEach(System.out::println);
+    }
+}
