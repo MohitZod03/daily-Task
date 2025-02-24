@@ -1,0 +1,70 @@
+1.Library Management System where students (threads) try to borrow and return books. To ensure thread safety, 
+we use synchronized methods so that only one student can borrow or return a book at a time. Use wait() method and notify() method to manage the synchronization.
+
+class Library {
+    private int availableBooks;
+
+    public Library(int totalBooks) {
+        this.availableBooks = totalBooks;
+    }
+
+    // Synchronized method for borrowing a book
+    public synchronized void borrowBook(String student) {
+        while (availableBooks == 0) {  // Wait if no books are available
+            try {
+                System.out.println(student + " is waiting for a book...");
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        availableBooks--;
+        System.out.println(student + " borrowed a book. Books left: " + availableBooks);
+    }
+
+    // Synchronized method for returning a book
+    public synchronized void returnBook(String student) {
+        availableBooks++;
+        System.out.println(student + " returned a book. Books left: " + availableBooks);
+        notify();  // Notify a waiting student
+    }
+}
+
+class StudentThread extends Thread {
+    private Library library;
+    private String studentName;
+
+    public StudentThread(Library library, String studentName) {
+        this.library = library;
+        this.studentName = studentName;
+    }
+
+    @Override
+    public void run() {
+        library.borrowBook(studentName);
+
+        try {
+            Thread.sleep(2000);  // Simulating reading time
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        library.returnBook(studentName);
+    }
+}
+
+public class LibraryManagementSystem {
+    public static void main(String[] args) {
+        Library library = new Library(2); // Only 2 books available
+
+        // Students trying to borrow books
+        Thread s1 = new StudentThread(library, "Alice");
+        Thread s2 = new StudentThread(library, "Bob");
+        Thread s3 = new StudentThread(library, "Charlie"); // Charlie has to wait
+
+        s1.start();
+        s2.start();
+        s3.start();
+    }
+}
