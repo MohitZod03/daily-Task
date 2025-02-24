@@ -1,0 +1,46 @@
+1.Write a Java program to establish a database connection and display all records from a sample table using Statement.
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class App {
+    public static void main(String[] args) {
+
+        // Installation Steps:
+        // 1. Install MySQL
+        // 2. Install MySQL Workbench
+        // 3. Install MySQL Connector (JDBC Driver)
+        // 4. Add MySQL Connector JAR to the classpath in VS Code
+
+        // Step 1: Database Connection Details
+        String url = "jdbc:mysql://localhost:3306/myDbIntern";
+        String userName = "root";
+        String password = "Mohit56062";
+
+        // Step 2: Establish Connection
+        // Since database operations are risky, we use a try-catch block
+        try {
+            // Load MySQL JDBC Driver (optional for JDBC 4.0+)
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Establish Connection
+            Connection connection = DriverManager.getConnection(url, userName, password);
+            System.out.println("Database Connected Successfully!");
+
+            // Step 3: Execute Query (Creating Table)
+            String query = "CREATE TABLE student (id INT PRIMARY KEY, name VARCHAR(100))";
+
+            // Create a Statement and Execute Query
+            Statement statement = connection.createStatement();
+            statement.execute(query);
+            System.out.println("Table 'student' created successfully!");
+
+            // Step 4: Close Resources
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            System.out.println("Connection Failed!");
+            e.printStackTrace();
+        }
+    }
+}
