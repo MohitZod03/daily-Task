@@ -1,0 +1,121 @@
+import java.sql.*;
+
+public class BankingSystem {
+    private static final String URL = "jdbc:mysql://localhost:3306/BankingDB";
+    private static final String USER = "root";  // Replace with your MySQL username
+    private static final String PASSWORD = "";  // Replace with your MySQL password
+
+    public static void main(String[] args) {
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            conn.setAutoCommit(false);  // Start transaction
+
+            try {
+                // Perform transactions
+                deposit(conn, 1, 500);
+                withdraw(conn, 1, 200);
+                transfer(conn, 1, 2, 100);
+
+                conn.commit();  // Commit only if all operations succeed
+                System.out.println("Transaction Successful!");
+            } catch (Exception e) {
+                conn.rollback();  // Rollback if any operation fails
+                System.out.println("Transaction Failed! Rolling Back Changes.");
+                e.printStackTrace();
+            }
+
+            // Insert multiple accounts using batch processing
+            insertAccountsBatch(conn);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Deposit money into an account
+    public static void deposit(Connection conn, int accountId, double amount) throws SQLException {
+        String sql = "UPDATE accounts SET balance = balance + ? WHERE account_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDouble(1, amount);
+            stmt.setInt(2, accountId);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) throw new SQLException("Deposit failed: Account not found.");
+        }
+
+        // Record the transaction
+        recordTransaction(conn, accountId, "DEPOSIT", amount);
+    }
+
+    // Withdraw money from an account
+    public static void withdraw(Connection conn, int accountId, double amount) throws SQLException {
+        // Check balance first
+        String checkBalanceSql = "SELECT balance FROM accounts WHERE account_id = ?";
+        try (PreparedStatement checkStmt = conn.prepareStatement(checkBalanceSql)) {
+            checkStmt.setInt(1, accountId);
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next() && rs.getDouble("balance") < amount) {
+                throw new SQLException("Insufficient funds!");
+            }
+        }
+
+        // Withdraw if sufficient balance
+        String sql = "UPDATE accounts SET balance = balance - ? WHERE account_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDouble(1, amount);
+            stmt.setInt(2, accountId);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) throw new SQLException("Withdrawal failed: Account not found.");
+        }
+
+        // Record the transaction
+        recordTransaction(conn, accountId, "WITHDRAWAL", amount);
+    }
+
+    // Transfer money between two accounts
+    public static void transfer(Connection conn, int fromAccount, int toAccount, double amount) throws SQLException {
+        withdraw(conn, fromAccount, amount);  // Deduct from sender
+        deposit(conn, toAccount, amount);    // Add to receiver
+
+        // Record the transfer transaction
+        recordTransaction(conn, fromAccount, "TRANSFER", -amount);
+        recordTransaction(conn, toAccount, "TRANSFER", amount);
+    }
+
+    // Record transaction in transactions table
+    public static void recordTransaction(Connection conn, int accountId, String type, double amount) throws SQLException {
+        String sql = "INSERT INTO transactions (account_id, transaction_type, amount) VALUES (?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, accountId);
+            stmt.setString(2, type);
+            stmt.setDouble(3, amount);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Insert multiple accounts using batch processing
+    public static void insertAccountsBatch(Connection conn) throws SQLException {
+        String sql = "INSERT INTO accounts (account_holder, balance) VALUES (?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            conn.setAutoCommit(false);  // Start transaction
+
+            stmt.setString(1, "Alice Johnson");
+            stmt.setDouble(2, 1000);
+            stmt.addBatch();
+
+            stmt.setString(1, "Bob Smith");
+            stmt.setDouble(2, 1500);
+            stmt.addBatch();
+
+            stmt.setString(1, "Charlie Davis");
+            stmt.setDouble(2, 2000);
+            stmt.addBatch();
+
+            int[] result = stmt.executeBatch();
+            conn.commit();  // Commit batch insert
+            System.out.println(result.length + " accounts inserted successfully!");
+        } catch (SQLException e) {
+            conn.rollback();  // Rollback batch insert if any failure
+            System.out.println("Batch insert failed! Rolling Back.");
+            e.printStackTrace();
+        }
+    }
+}
