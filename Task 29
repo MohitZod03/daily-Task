@@ -1,0 +1,90 @@
+import java.sql.*;
+
+public class JDBCStudentApp {
+    private static final String URL = "jdbc:mysql://localhost:3306/CollegeDB";
+    private static final String USER = "root";  // Replace with your MySQL username
+    private static final String PASSWORD = "";  // Replace with your MySQL password
+
+    public static void main(String[] args) {
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            System.out.println("Connected to the database!");
+
+            // Perform CRUD operations
+            insertStudent(conn, "John Doe", 20, "john.doe@example.com");
+            updateStudent(conn, 1, "John Updated", 22, "john.updated@example.com");
+            deleteStudent(conn, 2);
+            retrieveStudents(conn);
+
+            // Call stored procedure
+            callStoredProcedure(conn);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Insert student record
+    public static void insertStudent(Connection conn, String name, int age, String email) throws SQLException {
+        String sql = "INSERT INTO students (name, age, email) VALUES (?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            stmt.setInt(2, age);
+            stmt.setString(3, email);
+            int rowsInserted = stmt.executeUpdate();
+            System.out.println(rowsInserted + " student(s) inserted.");
+        }
+    }
+
+    // Update student record
+    public static void updateStudent(Connection conn, int id, String name, int age, String email) throws SQLException {
+        String sql = "UPDATE students SET name=?, age=?, email=? WHERE id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            stmt.setInt(2, age);
+            stmt.setString(3, email);
+            stmt.setInt(4, id);
+            int rowsUpdated = stmt.executeUpdate();
+            System.out.println(rowsUpdated + " student(s) updated.");
+        }
+    }
+
+    // Delete student record
+    public static void deleteStudent(Connection conn, int id) throws SQLException {
+        String sql = "DELETE FROM students WHERE id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int rowsDeleted = stmt.executeUpdate();
+            System.out.println(rowsDeleted + " student(s) deleted.");
+        }
+    }
+
+    // Retrieve and display all students
+    public static void retrieveStudents(Connection conn) throws SQLException {
+        String sql = "SELECT * FROM students";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            System.out.println("Student Records:");
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("id") +
+                        ", Name: " + rs.getString("name") +
+                        ", Age: " + rs.getInt("age") +
+                        ", Email: " + rs.getString("email"));
+            }
+        }
+    }
+
+    // Call stored procedure to retrieve employee details
+    public static void callStoredProcedure(Connection conn) throws SQLException {
+        String sql = "{CALL GetEmployeeDetails()}";
+        try (CallableStatement cstmt = conn.prepareCall(sql);
+             ResultSet rs = cstmt.executeQuery()) {
+            System.out.println("\nEmployee Details:");
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("id") +
+                        ", Name: " + rs.getString("name") +
+                        ", Department: " + rs.getString("department") +
+                        ", Salary: " + rs.getDouble("salary"));
+            }
+        }
+    }
+}
