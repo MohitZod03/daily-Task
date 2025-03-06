@@ -1,0 +1,69 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+class Student {
+    String name;
+    int marks;
+
+    public Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + marks + ")";
+    }
+}
+
+public class FilterStudents {
+    public static void main(String[] args) {
+        List<Student> students = Arrays.asList(
+            new Student("Alice", 85),
+            new Student("Bob", 78),
+            new Student("Charlie", 90),
+            new Student("David", 65),
+            new Student("Eve", 88)
+        );
+
+        // Filtering students with marks above 80
+        List<Student> highScorers = students.stream()
+                                           .filter(student -> student.marks > 80)
+                                           .collect(Collectors.toList());
+
+        System.out.println("Students with marks above 80: " + highScorers);
+    }
+}
+2.
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class ConvertNamesToUppercase {
+    public static void main(String[] args) {
+        List<String> names = Arrays.asList("alice", "bob", "charlie", "david");
+
+        // Convert names to uppercase using map()
+        List<String> upperCaseNames = names.stream()
+                                           .map(String::toUpperCase)
+                                           .collect(Collectors.toList());
+
+        System.out.println("Names in uppercase: " + upperCaseNames);
+    }
+}
+3.
+import java.util.Arrays;
+import java.util.List;
+
+public class SumUsingReduce {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(5, 10, 15, 20, 25);
+
+        // Find sum using reduce()
+        int sum = numbers.stream()
+                         .reduce(0, Integer::sum);
+
+        System.out.println("Sum of all numbers: " + sum);
+    }
+}
