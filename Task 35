@@ -1,0 +1,44 @@
+import java.util.Optional;
+
+public class OptionalExample {
+    public static Optional<String> getName(boolean returnName) {
+        if (returnName) {
+            return Optional.of("John Doe"); // Valid non-null value
+        } else {
+            return Optional.empty(); // Returns an empty Optional instead of null
+        }
+    }
+
+    public static void main(String[] args) {
+        Optional<String> name = getName(false); // Try with true or false
+
+        // Using ifPresentOrElse (Java 9+)
+        name.ifPresentOrElse(
+            System.out::println, 
+            () -> System.out.println("No name available")
+        );
+
+        // Alternative using orElse
+        String result = name.orElse("Default Name");
+        System.out.println("Result: " + result);
+    }
+}
+2.
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class DateExample {
+    public static void main(String[] args) {
+        // Get current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Define date format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Format date
+        String formattedDate = currentDate.format(formatter);
+
+        System.out.println("Current Date: " + formattedDate);
+    }
+}
+
