@@ -1,0 +1,38 @@
+public class RunnableLambdaExample {
+    public static void main(String[] args) {
+        // Traditional way (Anonymous Class)
+        Runnable oldRunnable = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Thread is running (Old way)...");
+            }
+        };
+
+        // Using Lambda Expression
+        Runnable lambdaRunnable = () -> System.out.println("Thread is running (Lambda Expression)...");
+
+        // Creating threads
+        Thread thread1 = new Thread(oldRunnable);
+        Thread thread2 = new Thread(lambdaRunnable);
+
+        // Start threads
+        thread1.start();
+        thread2.start();
+    }
+}
+
+
+2.
+import java.util.function.Predicate;
+
+public class EvenNumberLambda {
+    public static void main(String[] args) {
+        // Lambda expression to check even number
+        Predicate<Integer> isEven = num -> num % 2 == 0;
+
+        // Test with different numbers
+        System.out.println("10 is even? " + isEven.test(10)); // true
+        System.out.println("15 is even? " + isEven.test(15)); // false
+        System.out.println("22 is even? " + isEven.test(22)); // true
+    }
+}
