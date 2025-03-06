@@ -1,0 +1,59 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+public class FilterNumbers {
+    public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(5, 12, 8, 20, 3, 10, 15);
+
+        // Predicate to filter numbers greater than 10
+        Predicate<Integer> greaterThanTen = num -> num > 10;
+
+        // Filtering numbers
+        List<Integer> filteredNumbers = numbers.stream()
+                                               .filter(greaterThanTen)
+                                               .collect(Collectors.toList());
+
+        System.out.println("Numbers greater than 10: " + filteredNumbers);
+    }
+}
+
+2.
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class ConvertToUpperCase {
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList("hello", "world", "java", "lambda");
+
+        // Function to convert to uppercase
+        Function<String, String> toUpperCase = String::toUpperCase;
+
+        // Converting all strings to uppercase
+        List<String> upperCaseWords = words.stream()
+                                           .map(toUpperCase)
+                                           .collect(Collectors.toList());
+
+        System.out.println("Uppercase words: " + upperCaseWords);
+    }
+}
+
+3.
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class PrintUpperCase {
+    public static void main(String[] args) {
+        List<String> words = Arrays.asList("hello", "world", "java", "lambda");
+
+        // Consumer to print each string in uppercase
+        Consumer<String> printUpperCase = str -> System.out.println(str.toUpperCase());
+
+        // Printing each string
+        words.forEach(printUpperCase);
+    }
+}
