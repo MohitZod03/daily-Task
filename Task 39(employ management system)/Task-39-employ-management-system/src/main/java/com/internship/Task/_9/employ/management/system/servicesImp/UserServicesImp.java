@@ -1,15 +1,22 @@
 package com.internship.Task._9.employ.management.system.servicesImp;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.internship.Task._9.employ.management.exceptionHandling.CustomException.UserNotFoundException;
 import com.internship.Task._9.employ.management.system.entity.User;
 import com.internship.Task._9.employ.management.system.repository.UserRepo;
 import com.internship.Task._9.employ.management.system.services.UserServices;
 
+import ch.qos.logback.classic.Logger;
+
 @Service
 public class UserServicesImp implements UserServices {
+
+     private static final Logger logger = (Logger) LoggerFactory.getLogger(UserServicesImp.class);
 
     private final UserRepo userRepo;
     public UserServicesImp(UserRepo userRepo) {
@@ -33,13 +40,19 @@ public class UserServicesImp implements UserServices {
         return users;
     }
     @Override
-    public User getUserById(Long id) {
+    public Optional<User> getUserById(Long id) {
        
-        User user = userRepo.findById(id).get();
-        return user;
+        Optional<User> user = userRepo.findById(id);
+        if(user.isPresent()){
+            return user;
+ 
+        }else{
+            throw new UserNotFoundException("User with ID " + id + " not found");
+        }
+       
+       
        
     }
-
     @Override
     public User getUserByEmail(String email) {
        
@@ -51,7 +64,7 @@ public class UserServicesImp implements UserServices {
     @Override
     public User updateUser(Long id, User user) {
        
-       User user2 = userRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+       User user2 = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
         user2.setName(user.getName());
         user2.setEmail(user.getEmail());
         user2.setPassword(user.getPassword());
@@ -64,11 +77,12 @@ public class UserServicesImp implements UserServices {
     @Override
     public String deleteUser(Long id) {
        
-        User user = userRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
         userRepo.delete(user);
         return "User deleted successfully";
        
     }
+
 
 
 }

@@ -1,7 +1,10 @@
 package com.internship.Task._9.employ.management.system.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,8 +41,10 @@ public class UserController {
    
    
    @GetMapping("/getUserById/{id}")
-    public User getUserById(@PathVariable  Long id) {
-          return userServicesImp.getUserById(id);
+    public ResponseEntity<Optional<User>> getUserById(@PathVariable  Long id) {
+            Optional<User> user = userServicesImp.getUserById(id);
+       return new ResponseEntity<>(user, HttpStatus.FOUND);
+
     }
    
     @GetMapping("/getUserByEmail/{email}")
