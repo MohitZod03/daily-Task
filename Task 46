@@ -1,0 +1,111 @@
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class BlogPost {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String content;
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+}
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String text;
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @ManyToOne
+    @JoinColumn(name = "blog_post_id", nullable = false)
+    private BlogPost blogPost;
+}
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {}
+public interface CommentRepository extends JpaRepository<Comment, Long> {}
+
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class BlogPostService {
+    @Autowired
+    private BlogPostRepository blogPostRepository;
+
+    public List<BlogPost> getAllPosts() {
+        return blogPostRepository.findAll();
+    }
+
+    public Optional<BlogPost> getPostById(Long id) {
+        return blogPostRepository.findById(id);
+    }
+
+    public BlogPost createPost(BlogPost post) {
+        return blogPostRepository.save(post);
+    }
+}
+
+@Service
+public class CommentService {
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private BlogPostRepository blogPostRepository;
+
+    public Comment addComment(Long postId, Comment comment) {
+        return blogPostRepository.findById(postId).map(post -> {
+            comment.setBlogPost(post);
+            return commentRepository.save(comment);
+        }).orElseThrow(() -> new RuntimeException("Blog post not found"));
+    }
+}
+
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/blog-posts")
+public class BlogPostController {
+    @Autowired
+    private BlogPostService blogPostService;
+
+    @GetMapping
+    public List<BlogPost> getAllPosts() {
+        return blogPostService.getAllPosts();
+    }
+
+    @PostMapping
+    public BlogPost createPost(@RequestBody BlogPost post) {
+        return blogPostService.createPost(post);
+    }
+}
+
+@RestController
+@RequestMapping("/comments")
+public class CommentController {
+    @Autowired
+    private CommentService commentService;
+
+    @PostMapping("/add/{postId}")
+    public Comment addComment(@PathVariable Long postId, @RequestBody Comment comment) {
+        return commentService.addComment(postId, comment);
+    }
+}
