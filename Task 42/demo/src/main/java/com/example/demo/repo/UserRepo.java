@@ -1,6 +1,8 @@
 package com.example.demo.repo;
 
 import com.example.demo.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +33,9 @@ public interface UserRepo extends JpaRepository<User, Long> {
     @Transactional
     @Query("DELETE FROM User u WHERE u.username = :username")
     int deleteUserByUsername(String username);
+
+
+    // pagination we add there so far
+    // Custom query with pagination
+    Page<User> findByAgeGreaterThan(int age, Pageable pageable);
 }

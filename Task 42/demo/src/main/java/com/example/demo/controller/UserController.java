@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.User;
 import com.example.demo.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,5 +70,21 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    // pagination in controller
+    // Get users with pagination
+    @GetMapping("/pagination")
+    public ResponseEntity<Page<User>> getUsersWithPagination(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(userServices.getUsersWithPagination(page, size));
+    }
 
+    // Get users with pagination and sorting
+    @GetMapping("/pagination-sorting") // Full path will be "/users/pagination-sorting"
+    public ResponseEntity<Page<User>> getUsersWithSorting(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        return ResponseEntity.ok(userServices.getUsersWithSorting(page, size, sortBy));
+    }
 }
